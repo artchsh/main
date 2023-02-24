@@ -24,5 +24,3 @@ dist-ssr
 .env
 config/index.ts
 yarn.lock
-
-dist/
