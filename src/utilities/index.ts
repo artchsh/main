@@ -26,37 +26,79 @@ function ObjectsToNull(data: object[]) {
   return newData
 }
 
-class ethProvider {
-
-  provider: ethers.providers.Web3Provider
-  signer: ethers.providers.JsonRpcSigner
+export type ConnectReturnType = {
+  signer: ethers.JsonRpcSigner
+  provider: ethers.BrowserProvider
   address: string
+  account: any
+}
+class metamask {
+  signer: null | ethers.JsonRpcSigner
+  provider: null | ethers.BrowserProvider
+  metamask: any
+  address: any
+  account: any
 
   constructor() {
-    this.provider = new ethers.providers.Web3Provider(window.ethereum, "any")
-    this.signer = this.provider.getSigner()
-    this.address = ''
+    this.signer = null
+    this.provider = null
+    this.metamask = window.ethereum
+    this.address = null
+    this.account = null
   }
 
-  async connect() {
-    await this.provider.send("eth_requestAccounts", [])
-    const address = await this.signer.getAddress()
+  async connect(): Promise<ConnectReturnType> {
+    if (this.metamask != null) {
+      this.provider = new ethers.BrowserProvider(this.metamask)
+      let accounts = await this.provider.send('eth_requestAccounts', [])
+      this.account = accounts[0]
+      this.signer = await this.provider.getSigner()
+      this.address = await this.signer!.getAddress()
 
-    // Always prints the address that I first connected with
-    this.address = address
+      return {
+        signer: this.signer,
+        provider: this.provider,
+        address: this.address,
+        account: this.account
+      }
+    }
+    return {
+      signer: {} as ethers.JsonRpcSigner,
+      provider: {} as ethers.BrowserProvider,
+      address: '',
+      account: ''
+    }
+  }
+
+  get() {
+    return {
+      signer: this.signer,
+      provider: this.provider,
+      address: this.address,
+      account: this.account
+    }
+  }
+
+  #checkAuth() {
+    if (this.signer && this.provider && this.address) {
+      return true
+    }
+    if (!this.signer || !this.provider || !this.address) {
+      return false
+    }
   }
 
   async getAddress() {
-    if (this.address === '') {
-      this.connect()
-      return this.address
-    }
-    return this.address
+    try {
+      if (this.#checkAuth()) {
+        return this.address
+      } else {
+        console.warn('You do not have MetaMask installed!')
+      }
+    } catch {}
   }
-
-  
 }
 
-const eth = new ethProvider()
+const ethMetaMask = new metamask()
 
-export { ObjectsToNull, eth }
+export { ObjectsToNull, ethMetaMask }

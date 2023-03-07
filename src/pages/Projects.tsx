@@ -16,13 +16,13 @@ export default function Projects() {
         })
     }, [])
 
-    return (
+    return ( // grid sm:grid-cols-2 grid-cols-1 md:grid-cols-3 gap-2
         <>
             <Section fullHeight className='md:flex md:justify-center md:items-center'>
                 <div style={{ width: 1, height: 64, }} />
                 <m.div className='max-w-5xl mx-auto' initial={{  opacity: 0  }} animate={{ opacity: 1 }}>
                     <Suspense fallback={null}>
-                        <div className='grid sm:grid-cols-2 grid-cols-1 md:grid-cols-3 gap-2'>
+                        <div className='grid max-[600px]:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
                             {data.map((repo) => (
                                 <CardGithub key={repo.id} data={repo} />
                             ))}

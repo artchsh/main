@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from '@/components'
 import { Javascript, Typescript, CSS, Python, Github } from '@/components/Icons'
+import { Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Stack, Text } from '@chakra-ui/react'
 
 export type CardGithubType = {
     data: {
@@ -66,30 +67,28 @@ export default function CardGithub(props: CardGithubType) {
     }, [])
 
     return (
-        <div className='flex flex-col p-4 max-w-xl min-w-min text-white justify-between bg-black/90 shadow-md'>
-            <div className='flex justify-between'>
-                <div className='flex flex-col'>
-                    <div className='font-bold text-2xl'>
-                        {name}
-                    </div>
-                    <div className='text-neutral-400 text-sm'>
+        <Card maxW='sm' display={'flex'} colorScheme='red'>
+            <CardBody>
+                <Stack spacing={3}>
+                    <Heading size='md'>{name}</Heading>
+                    <Text>
                         Created: {createdAt}<br />
-                        Updated: {updatedAt}
-                    </div>
-                </div>
-                <div className='flex flex-col text-neutral-400 ml-10'>
-                    <div className='flex justify-end'>{repoLanguage}</div>
-                    <div>
-                        License: {license || 'None'}
-                    </div>
-                </div>
-            </div>
-            <div className='text-xl'>
-                {description}
-            </div>
-            <div className='flex justify-between mt-2'>
-                <div><Link className='p-2 border hover:bg-white/20 decoration-transparent' href={html_url}>Repository</Link></div>
-            </div>
-        </div>
+                        Last update: {updatedAt}<br />
+                        {description}
+                    </Text>
+                    <Text color='red.600' fontSize='2xl'>
+                        {language}
+                    </Text>
+                </Stack>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+                <ButtonGroup spacing='2'>
+                    <Button as={'a'} variant='solid' colorScheme='red' href={html_url}>
+                        Repository
+                    </Button>
+                </ButtonGroup>
+            </CardFooter>
+        </Card>
     )
 }

@@ -1,61 +1,63 @@
-import { Section } from '@/components'
-import { useEffect, useState, type ReactNode } from 'react'
-import Button from '@/components/Button'
-import { toast } from 'react-hot-toast'
-import { eth } from '@/utilities'
+import { useState } from 'react'
+import {
+  Box,
+  Heading,
+  Container,
+  Text,
+  Button,
+  Stack
+} from '@chakra-ui/react'
+import { ethMetaMask, type ConnectReturnType } from '@/utilities'
 
-export default function TokenPage() {
-    // states
-    const [web3_address, setWeb3_address] = useState<string>('')
-    const [web3_connected, setWeb3_connected] = useState<boolean>(false)
+export default function Token() {
 
-    // Functions
-    const checkWeb3 = () => {
-        if (typeof window.ethereum !== 'undefined') {
-            localStorage.setItem('metamask', 'true')
-            if (localStorage.getItem('metamask_address') !== '') {
-                setWeb3_connected(false)
+  // States
+  const [mmData, setMmData] = useState<ConnectReturnType>()
+
+  async function connectToMetaMask() {
+    const data = await ethMetaMask.connect()
+    setMmData(data)
+  }
+
+  return (
+    <>
+      <Container maxW={'3xl'} className='h-screen flex items-center justify-center'>
+        <Stack
+          as={Box}
+          textAlign={'center'}
+          spacing={{ base: 8, md: 14 }}
+          py={{ base: 20, md: 36 }}>
+          <Heading
+            fontWeight={600}
+            fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
+            lineHeight={'110%'}>
+            NEW CRYPTOCURRENCY<br />
+            <Text as={'span'} color={'red.400'}>
+              ACCOIN
+            </Text>
+          </Heading>
+          <Text color={'gray.500'}>
+            You can buy coins here only if you have MetaMask extension installed in your browser
+          </Text>
+          <Stack
+            direction={'column'}
+            spacing={3}
+            align={'center'}
+            alignSelf={'center'}
+            position={'relative'}>
+            {mmData ? null :
+              <Button
+                colorScheme={'red'}
+                rounded={'full'}
+                px={6}
+                onClick={() => { connectToMetaMask() }}
+              >
+                Connect to MetaMask
+              </Button>
             }
-            return true
-        }
-        localStorage.setItem('metamask', 'false')
-        return false
-    }
-
-    const connectToEth = async () => {
-        const address = await eth.getAddress()
-        if (localStorage.getItem('metamask') === 'true') {
-            localStorage.setItem('metamask_address', '')
-            localStorage.setItem('metamask_address', address)
-            if (localStorage.getItem('metamask_address') !== '') {
-                setWeb3_address(address)
-                setWeb3_connected(true)
-            }
-            setWeb3_connected(false)
-        }
-    }
-
-    useEffect(() => {
-        checkWeb3()
-    }, [web3_address, web3_connected])
-
-
-    return (
-        <Section className='w-screen flex justify-center items-center'>
-            <div className='flex flex-col'>
-                <span className='text-7xl text-white'>CRYPTOCOIN<span className='ml-2 text-sm font-bold text-neutral-500'>COIN</span></span>
-                <div className='flex justify-center mt-3'>
-                    {!web3_connected &&
-                        <Button type='button' onClick={connectToEth}>Connect</Button>
-                    }
-                    {web3_connected &&
-                    <>
-                        
-                    </>
-                    }
-                </div>
-            </div>
-
-        </Section>
-    )
+          </Stack>
+        </Stack>
+      </Container>
+    </>
+  )
 }
