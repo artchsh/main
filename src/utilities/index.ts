@@ -1,4 +1,7 @@
 import { ethers } from 'ethers'
+interface Window {
+  ethereum: any
+}
 
 function ObjectsToNull(data: object[]) {
   let newData: any[] = []
@@ -42,7 +45,7 @@ class metamask {
   constructor() {
     this.signer = null
     this.provider = null
-    this.metamask = window.ethereum
+    this.metamask = (window as unknown as Window).ethereum
     this.address = null
     this.account = null
   }
