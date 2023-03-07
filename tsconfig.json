@@ -20,12 +20,6 @@
       "@/*": [
         "./src/*"
       ],
-      "@declarations/props": [
-        "./src/utilities/declarations/props.d.ts"
-      ],
-      "@declarations/data": [
-        "./src/utilities/declarations/data.d.ts"
-      ],
       "@utils": [
         "./src/utilities/index.ts"
       ],

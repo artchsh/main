@@ -18,7 +18,7 @@ export default function Link(props: LinkType) {
         if(className !== '') {
             setDefaultClasses(defaultClasses + ' ' + className)
         }
-    }, [])
+    }, [className])
 
     return (
         <a className={defaultClasses} href={href} target='_blank'>{children}</a>

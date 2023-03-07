@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useRoutes } from "react-router-dom"
 import type { RouteObject } from "react-router-dom"
 
@@ -8,6 +6,8 @@ import DefaultLayout from '@/layouts/Default'
 
 // Pages
 import Home from '@/pages/Home'
+import Projects from '@/pages/Projects'
+import TokenPage from "@/pages/Token"
 
 export default function Routes() {
 
@@ -19,6 +19,14 @@ export default function Routes() {
         {
           index: true,
           element: <Home />
+        },
+        {
+          path: '/projects',
+          element: <Projects />
+        },
+        {
+          path: '/token',
+          element: <TokenPage />
         }
       ]
     }
